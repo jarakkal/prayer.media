@@ -1,0 +1,28 @@
+{
+  "name": "prayer.media",
+  "description": "Share your prayers with pictures.",
+  "version": "1.0.0",
+  "authors": [
+    "prayer.media <info@prayer.media> (https://prayer.media/)"
+  ],
+  "homepage": "https://prayer.media/",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/jarakkal/prayer.media"
+  },
+  "license": "Apache v2.0",
+  "keywords": [
+    "prayer",
+    "photos",
+    "jesus",
+    "media",
+    "sharing"
+  ],
+  "dependencies": {
+    "page": "visionmedia/page.js#~1.7.1",
+    "jquery": "2.2.3",
+    "sweetalert": "^1.1.3",
+    "latinize": "^0.2.0",
+    "material-design-lite": "^1.1.3"
+  }
+}
