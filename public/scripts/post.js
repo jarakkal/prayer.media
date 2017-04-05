@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Handles the single post UI.
  */
-friendlyPix.Post = class {
+prayerMedia.Post = class {
   /**
    * Initializes the single post's UI.
    * @constructor
@@ -37,8 +37,8 @@ friendlyPix.Post = class {
     $(document).ready(() => {
       this.postPage = $('#page-post');
       // Pointers to DOM elements.
-      this.postElement = $(friendlyPix.Post.createPostHtml());
-      friendlyPix.MaterialUtils.upgradeTextFields(this.postElement);
+      this.postElement = $(prayerMedia.Post.createPostHtml());
+      prayerMedia.MaterialUtils.upgradeTextFields(this.postElement);
       this.toast = $('.mdl-js-snackbar');
       this.theatre = $('.fp-theatre');
     });
@@ -49,7 +49,7 @@ friendlyPix.Post = class {
    */
   loadPost(postId) {
     // Load the posts information.
-    friendlyPix.firebase.getPostData(postId).then(snapshot => {
+    prayerMedia.firebase.getPostData(postId).then(snapshot => {
       const post = snapshot.val();
       // Clear listeners and previous post data.
       this.clear();
@@ -80,7 +80,7 @@ friendlyPix.Post = class {
     this.timers = [];
 
     // Remove Firebase listeners.
-    friendlyPix.firebase.cancelAllSubscriptions();
+    prayerMedia.firebase.cancelAllSubscriptions();
   }
 
   /**
@@ -90,7 +90,7 @@ friendlyPix.Post = class {
     const commentsIds = Object.keys(comments);
     for (let i = commentsIds.length - 1; i >= 0; i--) {
       $('.fp-comments', this.postElement).prepend(
-          friendlyPix.Post.createCommentHtml(comments[commentsIds[i]].author,
+          prayerMedia.Post.createCommentHtml(comments[commentsIds[i]].author,
               comments[commentsIds[i]].text));
     }
   }
@@ -132,7 +132,7 @@ friendlyPix.Post = class {
     this._setupThumb(thumbUrl, picUrl);
 
     // Make sure we update if the thumb or pic URL changes.
-    friendlyPix.firebase.registerForThumbChanges(postId, thumbUrl => {
+    prayerMedia.firebase.registerForThumbChanges(postId, thumbUrl => {
       this._setupThumb(thumbUrl, picUrl);
     });
 
@@ -189,10 +189,10 @@ friendlyPix.Post = class {
     const post = this.postElement;
 
     $('.fp-time', post).attr('href', `/post/${postId}`);
-    $('.fp-time', post).text(friendlyPix.Post.getTimeText(timestamp));
+    $('.fp-time', post).text(prayerMedia.Post.getTimeText(timestamp));
     // Update the time counter every minutes.
     this.timers.push(setInterval(
-      () => $('.fp-time', post).text(friendlyPix.Post.getTimeText(timestamp)), 60000));
+      () => $('.fp-time', post).text(prayerMedia.Post.getTimeText(timestamp)), 60000));
   }
 
   /**
@@ -204,19 +204,19 @@ friendlyPix.Post = class {
 
     // Creates the initial comment with the post's text.
     $('.fp-first-comment', post).empty();
-    $('.fp-first-comment', post).append(friendlyPix.Post.createCommentHtml(author, imageText));
+    $('.fp-first-comment', post).append(prayerMedia.Post.createCommentHtml(author, imageText));
 
     // Load first page of comments and listen to new comments.
     $('.fp-comments', post).empty();
-    friendlyPix.firebase.getComments(postId).then(data => {
+    prayerMedia.firebase.getComments(postId).then(data => {
       this.displayComments(data.entries);
       this.displayNextPageButton(data.nextPage);
 
       // Display any new comments.
       const commentIds = Object.keys(data.entries);
-      friendlyPix.firebase.subscribeToComments(postId, (commentId, commentData) => {
+      prayerMedia.firebase.subscribeToComments(postId, (commentId, commentData) => {
         $('.fp-comments', post).append(
-          friendlyPix.Post.createCommentHtml(commentData.author, commentData.text));
+          prayerMedia.Post.createCommentHtml(commentData.author, commentData.text));
       }, commentIds ? commentIds[commentIds.length - 1] : 0);
     });
 
@@ -229,7 +229,7 @@ friendlyPix.Post = class {
         if (!commentText || commentText.length === 0) {
           return;
         }
-        friendlyPix.firebase.addComment(postId, commentText);
+        prayerMedia.firebase.addComment(postId, commentText);
         $(`.mdl-textfield__input`, post).val('');
       });
       const ran = Math.floor(Math.random() * 10000000);
@@ -263,7 +263,7 @@ friendlyPix.Post = class {
           allowEscapeKey: true
         }, () => {
           $('.fp-delete-post', post).prop('disabled', true);
-          friendlyPix.firebase.deletePost(postId, picStorageUri, thumbStorageUri).then(() => {
+          prayerMedia.firebase.deletePost(postId, picStorageUri, thumbStorageUri).then(() => {
             swal({
               title: 'Deleted!',
               text: 'Your post has been deleted.',
@@ -297,7 +297,7 @@ friendlyPix.Post = class {
 
     if (this.auth.currentUser) {
       // Listen to like status.
-      friendlyPix.firebase.registerToUserLike(postId, isliked => {
+      prayerMedia.firebase.registerToUserLike(postId, isliked => {
         if (isliked) {
           $('.fp-liked', post).show();
           $('.fp-not-liked', post).hide();
@@ -309,9 +309,9 @@ friendlyPix.Post = class {
 
       // Add event listeners.
       $('.fp-liked', post).off('click');
-      $('.fp-liked', post).click(() => friendlyPix.firebase.updateLike(postId, false));
+      $('.fp-liked', post).click(() => prayerMedia.firebase.updateLike(postId, false));
       $('.fp-not-liked', post).off('click');
-      $('.fp-not-liked', post).click(() => friendlyPix.firebase.updateLike(postId, true));
+      $('.fp-not-liked', post).click(() => prayerMedia.firebase.updateLike(postId, true));
     } else {
       $('.fp-liked', post).hide();
       $('.fp-not-liked', post).hide();
@@ -319,7 +319,7 @@ friendlyPix.Post = class {
     }
 
     // Listen to number of Likes.
-    friendlyPix.firebase.registerForLikesCount(postId, nbLikes => {
+    prayerMedia.firebase.registerForLikesCount(postId, nbLikes => {
       if (nbLikes > 0) {
         $('.fp-likes', post).show();
         $('.fp-likes', post).text(nbLikes + ' like' + (nbLikes === 1 ? '' : 's'));
@@ -409,9 +409,9 @@ friendlyPix.Post = class {
   }
 };
 
-friendlyPix.post = new friendlyPix.Post();
+prayerMedia.post = new prayerMedia.Post();
 
 $(document).ready(() => {
   // We add the Post element to the single post page.
-  $('.fp-image-container', friendlyPix.post.postPage).append(friendlyPix.post.postElement);
+  $('.fp-image-container', prayerMedia.post.postPage).append(prayerMedia.post.postElement);
 });

@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Set of utilities to handle Material Design Lite elements.
  */
-friendlyPix.MaterialUtils = class {
+prayerMedia.MaterialUtils = class {
 
   /**
    * Refreshes the UI state of the given Material Design Checkbox / Switch element.

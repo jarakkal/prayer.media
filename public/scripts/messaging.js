@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Handles notifications.
  */
-friendlyPix.Messaging = class {
+prayerMedia.Messaging = class {
 
   /**
    * Inititializes the notifications utility.
@@ -55,7 +55,7 @@ friendlyPix.Messaging = class {
   saveToken() {
     this.messaging.getToken().then(currentToken => {
       if (currentToken) {
-        friendlyPix.firebase.saveNotificationToken(currentToken).then(() => {
+        prayerMedia.firebase.saveNotificationToken(currentToken).then(() => {
           console.log('Notification Token saved to database');
         });
       } else {
@@ -106,7 +106,7 @@ friendlyPix.Messaging = class {
     const checked = this.enableNotificationsCheckbox.prop('checked');
     this.enableNotificationsCheckbox.prop('disabled', true);
 
-    return friendlyPix.firebase.toggleNotificationEnabled(checked);
+    return prayerMedia.firebase.toggleNotificationEnabled(checked);
   }
 
   /**
@@ -114,11 +114,11 @@ friendlyPix.Messaging = class {
    */
   trackNotificationsEnabledStatus() {
     if (this.auth.currentUser) {
-      friendlyPix.firebase.registerToNotificationEnabledStatusUpdate(data => {
+      prayerMedia.firebase.registerToNotificationEnabledStatusUpdate(data => {
         this.enableNotificationsCheckbox.prop('checked', data.val() !== null);
         this.enableNotificationsCheckbox.prop('disabled', false);
         this.enableNotificationsLabel.text(data.val() ? 'Notifications Enabled' : 'Enable Notifications');
-        friendlyPix.MaterialUtils.refreshSwitchState(this.enableNotificationsContainer);
+        prayerMedia.MaterialUtils.refreshSwitchState(this.enableNotificationsContainer);
 
         if (data.val()) {
           this.saveToken();
@@ -128,4 +128,4 @@ friendlyPix.Messaging = class {
   }
 };
 
-friendlyPix.messaging = new friendlyPix.Messaging();
+prayerMedia.messaging = new prayerMedia.Messaging();

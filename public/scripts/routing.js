@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Handles the pages/routing.
  */
-friendlyPix.Router = class {
+prayerMedia.Router = class {
 
   /**
    * Initializes the Friendly Pix controller/router.
@@ -28,7 +28,7 @@ friendlyPix.Router = class {
    */
   constructor() {
     $(document).ready(() => {
-      friendlyPix.auth.waitForAuth.then(() => {
+      prayerMedia.auth.waitForAuth.then(() => {
         // Dom elements.
         this.pagesElements = $('[id^=page-]');
         this.splashLogin = $('#login', '#page-splash');
@@ -39,13 +39,13 @@ friendlyPix.Router = class {
         }
 
         // Configuring routes.
-        const pipe = friendlyPix.Router.pipe;
+        const pipe = prayerMedia.Router.pipe;
         const displayPage = this.displayPage.bind(this);
-        const loadUser = userId => friendlyPix.userPage.loadUser(userId);
-        const showHomeFeed = () => friendlyPix.feed.showHomeFeed();
-        const showGeneralFeed = () => friendlyPix.feed.showGeneralFeed();
-        const clearFeed = () => friendlyPix.feed.clear();
-        const showPost = postId => friendlyPix.post.loadPost(postId);
+        const loadUser = userId => prayerMedia.userPage.loadUser(userId);
+        const showHomeFeed = () => prayerMedia.feed.showHomeFeed();
+        const showGeneralFeed = () => prayerMedia.feed.showGeneralFeed();
+        const clearFeed = () => prayerMedia.feed.clear();
+        const showPost = postId => prayerMedia.post.loadPost(postId);
 
         page('/', pipe(showHomeFeed, null, true),
             pipe(displayPage, {pageId: 'feed', onlyAuthed: true}));
@@ -75,7 +75,7 @@ friendlyPix.Router = class {
       pageId = 'splash';
       this.splashLogin.show();
     }
-    friendlyPix.Router.setLinkAsActive(context.canonicalPath);
+    prayerMedia.Router.setLinkAsActive(context.canonicalPath);
     this.pagesElements.each(function(index, element) {
       if (element.id === 'page-' + pageId) {
         $(element).show();
@@ -85,8 +85,8 @@ friendlyPix.Router = class {
         $(element).hide();
       }
     });
-    friendlyPix.MaterialUtils.closeDrawer();
-    friendlyPix.Router.scrollToTop();
+    prayerMedia.MaterialUtils.closeDrawer();
+    prayerMedia.Router.scrollToTop();
   }
 
   /**
@@ -139,4 +139,4 @@ friendlyPix.Router = class {
   }
 };
 
-friendlyPix.router = new friendlyPix.Router();
+prayerMedia.router = new prayerMedia.Router();

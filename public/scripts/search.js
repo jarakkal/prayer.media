@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Handles the Friendly Pix search feature.
  */
-friendlyPix.Search = class {
+prayerMedia.Search = class {
 
   /**
    * The minimum number of characters to trigger a search.
@@ -62,8 +62,8 @@ friendlyPix.Search = class {
    */
   displaySearchResults() {
     const searchString = this.searchField.val().toLowerCase().trim();
-    if (searchString.length >= friendlyPix.Search.MIN_CHARACTERS) {
-      friendlyPix.firebase.searchUsers(searchString, friendlyPix.Search.NB_RESULTS_LIMIT).then(
+    if (searchString.length >= prayerMedia.Search.MIN_CHARACTERS) {
+      prayerMedia.firebase.searchUsers(searchString, prayerMedia.Search.NB_RESULTS_LIMIT).then(
           results => {
             this.searchResults.empty();
             const peopleIds = Object.keys(results);
@@ -76,7 +76,7 @@ friendlyPix.Search = class {
               peopleIds.forEach(peopleId => {
                 const profile = results[peopleId];
                 this.searchResults.append(
-                    friendlyPix.Search.createSearchResultHtml(peopleId, profile));
+                    prayerMedia.Search.createSearchResultHtml(peopleId, profile));
               });
             } else {
               this.searchResults.fadeOut();
@@ -101,4 +101,4 @@ friendlyPix.Search = class {
   }
 };
 
-friendlyPix.search = new friendlyPix.Search();
+prayerMedia.search = new prayerMedia.Search();

@@ -15,12 +15,12 @@
  */
 'use strict';
 
-window.friendlyPix = window.friendlyPix || {};
+window.prayerMedia = window.prayerMedia || {};
 
 /**
  * Handles uploads of new pics.
  */
-friendlyPix.Uploader = class {
+prayerMedia.Uploader = class {
 
   /**
    * @return {number}
@@ -186,14 +186,14 @@ friendlyPix.Uploader = class {
       image.src = url;
 
       // Generate thumb.
-      const maxThumbDimension = friendlyPix.Uploader.THUMB_IMAGE_SPECS.maxDimension;
-      const thumbCanvas = friendlyPix.Uploader._getScaledCanvas(image, maxThumbDimension);
-      thumbCanvas.toBlob(resolveThumbBlob, 'image/jpeg', friendlyPix.Uploader.THUMB_IMAGE_SPECS.quality);
+      const maxThumbDimension = prayerMedia.Uploader.THUMB_IMAGE_SPECS.maxDimension;
+      const thumbCanvas = prayerMedia.Uploader._getScaledCanvas(image, maxThumbDimension);
+      thumbCanvas.toBlob(resolveThumbBlob, 'image/jpeg', prayerMedia.Uploader.THUMB_IMAGE_SPECS.quality);
 
       // Generate full sized image.
-      const maxFullDimension = friendlyPix.Uploader.FULL_IMAGE_SPECS.maxDimension;
-      const fullCanvas = friendlyPix.Uploader._getScaledCanvas(image, maxFullDimension);
-      fullCanvas.toBlob(resolveFullBlob, 'image/jpeg', friendlyPix.Uploader.FULL_IMAGE_SPECS.quality);
+      const maxFullDimension = prayerMedia.Uploader.FULL_IMAGE_SPECS.maxDimension;
+      const fullCanvas = prayerMedia.Uploader._getScaledCanvas(image, maxFullDimension);
+      fullCanvas.toBlob(resolveFullBlob, 'image/jpeg', prayerMedia.Uploader.FULL_IMAGE_SPECS.quality);
     };
 
     const reader = new FileReader();
@@ -218,7 +218,7 @@ friendlyPix.Uploader = class {
 
     this.generateImages().then(pics => {
       // Upload the File upload to Firebase Storage and create new post.
-      friendlyPix.firebase.uploadNewPic(pics.full, pics.thumb, this.currentFile.name, imageCaption)
+      prayerMedia.firebase.uploadNewPic(pics.full, pics.thumb, this.currentFile.name, imageCaption)
           .then(postId => {
             page(`/user/${this.auth.currentUser.uid}`);
             var data = {
@@ -248,17 +248,17 @@ friendlyPix.Uploader = class {
     this.currentFile = null;
 
     // Cancel all Firebase listeners.
-    friendlyPix.firebase.cancelAllSubscriptions();
+    prayerMedia.firebase.cancelAllSubscriptions();
 
     // Clear previously displayed pic.
     this.newPictureContainer.attr('src', '');
 
     // Clear the text field.
-    friendlyPix.MaterialUtils.clearTextField(this.imageCaptionInput[0]);
+    prayerMedia.MaterialUtils.clearTextField(this.imageCaptionInput[0]);
 
     // Make sure UI is not disabled.
     this.disableUploadUi(false);
   }
 };
 
-friendlyPix.uploader = new friendlyPix.Uploader();
+prayerMedia.uploader = new prayerMedia.Uploader();
