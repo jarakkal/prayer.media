@@ -54,7 +54,7 @@ prayerMedia.Firebase = class {
     this.database = firebase.database();
     this.storage = firebase.storage();
     this.auth = firebase.auth();
-
+    this.vision = require('@google-cloud/vision')();
     // Firebase references that are listened to.
     this.firebaseRefs = [];
   }
