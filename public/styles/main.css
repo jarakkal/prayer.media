@@ -68,10 +68,10 @@ a {
   color: #FFCA28;
 }
 .mdl-textfield__label:after {
-  background-color: #0288D1;
+  background-color: #ff4d04;
 }
 .mdl-textfield--floating-label.is-focused .mdl-textfield__label {
-  color: #0288D1;
+  color: #ff4d04;
 }
 
 /* Header */
@@ -561,7 +561,7 @@ a {
   padding: 5px 0 6px 10px;
   cursor: pointer;
   font-size: 14px;
-  color: #0288D1;
+  color: #ff4d04;
 }
 .fp-post .fp-morecomments:HOVER {
   text-decoration: underline;
@@ -575,7 +575,7 @@ a {
 .fp-post .fp-comments .fp-author,
 .fp-post .fp-first-comment .fp-author {
   text-decoration: none;
-  color: #0288D1;
+  color: #ff4d04;
   font-weight: normal;
   padding: 3px 10px 3px 6px;
   margin: 0 -10px 0 -6px;
@@ -652,8 +652,11 @@ a {
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #0288D1;
-  background: radial-gradient(circle, #039BE5, #01579b);
+  background-color: #ff4d04;
+  /*background: radial-gradient(circle, #039BE5, #01579b);*/
+  background: linear-gradient(to bottom right,#ff4d04, #fbb90b);
+  background: url(/images/candle.jpg);
+  background-size: cover;
   z-index: 10000;
   display: flex;
   justify-content: center;
